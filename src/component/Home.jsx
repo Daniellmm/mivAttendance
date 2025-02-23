@@ -48,7 +48,7 @@ const AttendanceForm = () => {
 
                     console.log("Distance to venue:", distance, "meters");
 
-                    if (distance <= 100) {
+                    if (distance <= 1000) {
                         setIsWithinLocation(true);
                     } else {
                         setIsWithinLocation(false);
@@ -120,8 +120,8 @@ const AttendanceForm = () => {
                     </button>
 
                     {/* Show location status */}
-                    {isWithinLocation === false && <p className="text-red-500">❌ You are not at the venue!</p>}
-                    {isWithinLocation === true && <p className="text-green-500">✅ Location Verified! You can submit attendance.</p>}
+                    {isWithinLocation === false && <p className="text-red-500 pb-10">❌ You are not at the venue!</p>}
+                    {isWithinLocation === true && <p className="text-green-500 pb-10">✅ Location Verified! You can submit attendance.</p>}
 
                     <form onSubmit={handleSubmit}>
                         <input
@@ -154,7 +154,7 @@ const AttendanceForm = () => {
                         </select>
                         <button
                             type="submit"
-                            className={`px-4 py-2 rounded-md w-full ${isWithinLocation === true ? "bg-[#1c69a0]  text-white" : "bg-gray-400 text-gray-200 cursor-not-allowed"
+                            className={`px-4 py-2 mt-10 rounded-md w-full ${isWithinLocation === true ? "bg-[#1c69a0]  text-white" : "bg-gray-400 text-gray-200 cursor-not-allowed"
                                 }`}
                             disabled={isWithinLocation !== true}
                         >
