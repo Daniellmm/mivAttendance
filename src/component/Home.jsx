@@ -9,7 +9,8 @@ const AttendanceForm = () => {
     });
     const [isWithinLocation, setIsWithinLocation] = useState(null);
     
-    const googleScriptURL = import.meta.env.VITE_GOOGLE_SCRIPT_URL;
+    // const googleScriptURL = import.meta.env.VITE_GOOGLE_SCRIPT_URL;
+    const googleScriptURL = "https://script.google.com/macros/s/AKfycbwkvayaxqKjWGFe1bMz4QBhTBpEkle7y1-BQ9PWqvKnpHEMIAwVnVFNAy_85Mwx2Oe3FA/exec";
 
 
     const rehearsalVenue = {
