@@ -74,15 +74,19 @@ const AttendanceForm = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (isWithinLocation === false) {
+        if (!isWithinLocation) {
             alert("You are not at the rehearsal venue! Attendance not recorded.");
             return;
         }
 
         const currentDate = new Date().toLocaleDateString("en-GB");
 
-        // Add the date to the form data
-        const formDataWithDate = { ...formData, date: currentDate };
+        // Add the date and location status to the form data
+        const formDataWithDate = {
+            ...formData,
+            date: currentDate,
+            isWithinLocation: isWithinLocation ? "Yes" : "No"
+        };
 
         // Convert form data to URLSearchParams
         const formDataUrl = new URLSearchParams();
@@ -93,24 +97,17 @@ const AttendanceForm = () => {
         try {
             const response = await fetch(googleScriptURL, {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/x-www-form-urlencoded", // Set the correct content type
-                },
-                body: formDataUrl, // Send the URLSearchParams object
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                body: formDataUrl.toString(),
             });
 
-            if (!response.ok) {
-                throw new Error("Network response was not ok");
-            }
-
-            const result = await response.json(); // Parse the JSON response
-            console.log("Server response:", result); // Log the response for debugging
+            const result = await response.json();
 
             if (result.status === "success") {
-                alert("Attendance Submitted!");
+                setStatus("Submitted successfully!");
                 setFormData({ fullName: "", churchCenter: "" });
             } else {
-                throw new Error(result.message || "Unknown error occurred");
+                throw new Error(result.error || "Unknown error");
             }
         } catch (error) {
             console.error("Error submitting:", error);
