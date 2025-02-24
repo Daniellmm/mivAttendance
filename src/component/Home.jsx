@@ -81,18 +81,22 @@ const AttendanceForm = () => {
 
         const currentDate = new Date().toLocaleDateString("en-GB");
 
-        const dataToSend = {
-            ...formData,
-            date: currentDate,
-        };
+        // Add the date to the form data
+        const formDataWithDate = { ...formData, date: currentDate };
+
+        // Convert form data to URLSearchParams
+        const formDataUrl = new URLSearchParams();
+        Object.keys(formDataWithDate).forEach((key) => {
+            formDataUrl.append(key, formDataWithDate[key]);
+        });
 
         try {
             const response = await fetch(googleScriptURL, {
                 method: "POST",
                 headers: {
-                    "Content-Type": "application/json",
+                    "Content-Type": "application/x-www-form-urlencoded", // Set the correct content type
                 },
-                body: JSON.stringify(dataToSend),
+                body: formDataUrl, // Send the URLSearchParams object
             });
 
             if (!response.ok) {
