@@ -81,32 +81,26 @@ const AttendanceForm = () => {
 
         const currentDate = new Date().toLocaleDateString("en-GB");
 
-        const dataToSend = {
-            ...formData,
-            date: currentDate,
-        };
+        const dataToSend = new FormData();
+        dataToSend.append("fullName", formData.fullName);
+        dataToSend.append("churchCenter", formData.churchCenter);
+        dataToSend.append("date", currentDate);
 
         try {
             const response = await fetch(googleScriptURL, {
                 method: "POST",
-                mode: "no-cors",
-                body: JSON.stringify(dataToSend),
-                headers: {
-                    "Content-Type": "application/json",
-                },
+                body: dataToSend,
             });
 
-            const result = await response.json();
-            if (result.status === "success") {
-                alert("Attendance Submitted!");
-                setFormData({ fullName: "", churchCenter: "" });
-            } else {
-                console.error("Error:", result.message);
-                alert("Error submitting: " + result.message);
+            if (!response.ok) {
+                throw new Error("Network response was not ok");
             }
+
+            alert("Attendance Submitted!");
+            setFormData({ fullName: "", churchCenter: "" });
         } catch (error) {
             console.error("Error submitting:", error);
-            alert("Error submitting: " + error.message);
+            alert("Submission failed. Please try again.");
         }
     };
 
