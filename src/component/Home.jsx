@@ -87,17 +87,26 @@ const AttendanceForm = () => {
         };
 
         try {
-            await fetch(googleScriptURL, {
+            const response = await fetch(googleScriptURL, {
                 method: "POST",
+                mode: "cors", // Fixes potential CORS issues
                 body: JSON.stringify(dataToSend),
                 headers: {
                     "Content-Type": "application/json",
                 },
             });
-            alert("Attendance Submitted!");
-            setFormData({ fullName: "", churchCenter: "" });
+
+            const result = await response.json();
+            if (result.status === "success") {
+                alert("Attendance Submitted!");
+                setFormData({ fullName: "", churchCenter: "" });
+            } else {
+                console.error("Error:", result.message);
+                alert("Error submitting: " + result.message);
+            }
         } catch (error) {
             console.error("Error submitting:", error);
+            alert("Error submitting: " + error.message);
         }
     };
 
