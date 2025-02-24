@@ -89,7 +89,7 @@ const AttendanceForm = () => {
         try {
             const response = await fetch(googleScriptURL, {
                 method: "POST",
-                mode: "cors", // Fixes potential CORS issues
+                mode: "no-cors",
                 body: JSON.stringify(dataToSend),
                 headers: {
                     "Content-Type": "application/json",
