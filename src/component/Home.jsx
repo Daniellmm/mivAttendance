@@ -10,13 +10,14 @@ const AttendanceForm = () => {
     const [isWithinLocation, setIsWithinLocation] = useState(null);
     
     // const googleScriptURL = import.meta.env.VITE_GOOGLE_SCRIPT_URL;
-    const googleScriptURL = "https://script.google.com/macros/s/AKfycbwkvayaxqKjWGFe1bMz4QBhTBpEkle7y1-BQ9PWqvKnpHEMIAwVnVFNAy_85Mwx2Oe3FA/exec";
+        const googleScriptURL = "https://script.google.com/macros/s/AKfycbwkvayaxqKjWGFe1bMz4QBhTBpEkle7y1-BQ9PWqvKnpHEMIAwVnVFNAy_85Mwx2Oe3FA/exec";
 
 
     const rehearsalVenue = {
-        latitude: 7.452084925853313, 
-        longitude: 3.914906487622685,
+        latitude: 7.843822, 
+        longitude: 3.927699,
     };
+    
     // const rehearsalVenue = {
     //     latitude: 7.462489762472925, 
     //     longitude: 3.9130698895319016,
