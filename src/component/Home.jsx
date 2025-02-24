@@ -9,8 +9,8 @@ const AttendanceForm = () => {
     });
     const [isWithinLocation, setIsWithinLocation] = useState(null);
     
-    // const googleScriptURL = import.meta.env.VITE_GOOGLE_SCRIPT_URL;
-        const googleScriptURL = "https://script.google.com/macros/s/AKfycbwkvayaxqKjWGFe1bMz4QBhTBpEkle7y1-BQ9PWqvKnpHEMIAwVnVFNAy_85Mwx2Oe3FA/exec";
+    const googleScriptURL = import.meta.env.VITE_GOOGLE_SCRIPT_URL;
+        // const googleScriptURL = "https://script.google.com/macros/s/AKfycbwkvayaxqKjWGFe1bMz4QBhTBpEkle7y1-BQ9PWqvKnpHEMIAwVnVFNAy_85Mwx2Oe3FA/exec";
 
 
     const rehearsalVenue = {
@@ -116,7 +116,7 @@ const AttendanceForm = () => {
                     {/* Location Verification Button */}
                     <button
                         onClick={checkLocation}
-                        className="bg-blue-600 text-white px-4 py-2 rounded-md w-full mb-4"
+                        className="bg-[#1c69a0] text-white px-4 py-2 rounded-md w-full mb-4"
                     >
                         Verify Location
                     </button>
