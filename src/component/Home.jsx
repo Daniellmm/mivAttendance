@@ -95,20 +95,21 @@ const AttendanceForm = () => {
         });
 
         try {
-            const response = await fetch(googleScriptURL, {
+            // const response =
+             await fetch(googleScriptURL, {
                 method: "POST",
                 headers: { "Content-Type": "application/x-www-form-urlencoded" },
                 body: formDataUrl.toString(),
             });
 
-            const result = await response.json();
+            // const result = await response.json();
 
-            if (result.status === "success") {
+            // if (result.status === "success") {
                 setStatus("Submitted successfully!");
                 setFormData({ fullName: "", churchCenter: "" });
-            } else {
-                throw new Error(result.error || "Unknown error");
-            }
+            // } else {
+            //     throw new Error(result.error || "Unknown error");
+            // }
         } catch (error) {
             console.error("Error submitting:", error);
             alert("Submission failed. Please try again.");
