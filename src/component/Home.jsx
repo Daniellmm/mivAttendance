@@ -11,6 +11,8 @@ const AttendanceForm = () => {
     const [status, setStatus] = useState("");
     const [isWithinLocation, setIsWithinLocation] = useState(null);
     const [submissionCount, setSubmissionCount] = useState(0);
+    const [isLoadingLocation, setIsLoadingLocation] = useState(false);
+    const [isLoadingSubmit, setIsLoadingSubmit] = useState(false);
 
     const googleScriptURL = import.meta.env.VITE_GOOGLE_SCRIPT_URL;
     // const googleScriptURL = "https://script.google.com/macros/s/AKfycbwkvayaxqKjWGFe1bMz4QBhTBpEkle7y1-BQ9PWqvKnpHEMIAwVnVFNAy_85Mwx2Oe3FA/exec";
@@ -74,6 +76,8 @@ const AttendanceForm = () => {
 
 
     const checkLocation = () => {
+        setIsLoadingLocation(true);
+
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
                 (position) => {
@@ -90,15 +94,18 @@ const AttendanceForm = () => {
                     } else {
                         setIsWithinLocation(false);
                     }
+                    setIsLoadingLocation(false);
                 },
                 (error) => {
                     console.error("Error getting location:", error);
                     setIsWithinLocation(false);
+                    setIsLoadingLocation(false);
                 }
             );
         } else {
             alert("Geolocation is not supported by your browser.");
             setIsWithinLocation(false);
+            setIsLoadingLocation(false);
         }
     };
 
@@ -113,6 +120,8 @@ const AttendanceForm = () => {
             alert("You are not at the rehearsal venue! Attendance not recorded.");
             return;
         }
+
+        setIsLoadingSubmit(true);
 
         const currentDate = new Date().toLocaleDateString("en-GB");
 
@@ -149,6 +158,8 @@ const AttendanceForm = () => {
             setStatus('Error Submitting Form.');
             console.error("Error submitting:", error);
             alert("Submission failed. Please try again.");
+        } finally {
+            setIsLoadingSubmit(false); // Stop loading
         }
     };
 
@@ -165,15 +176,20 @@ const AttendanceForm = () => {
                     <h2 className="md:text-2xl text-center text-lg font-bold mb-4">General Rehearsal Attendance</h2>
 
                     <div className="text-center mb-4">
-                        <p className="text-lg font-semibold">{submissionCount}: Attendee </p>
+                        <p className="text-lg font-semibold">Total attendee today: {submissionCount} </p>
                     </div>
 
                     {/* Location Verification Button */}
                     <button
                         onClick={checkLocation}
-                        className="bg-[#1c69a0] text-white px-4 py-2 rounded-md w-full mb-4"
+                        className="bg-[#1c69a0] text-white px-4 py-2 rounded-md w-full mb-4 flex items-center justify-center"
+                        disabled={isLoadingLocation} // Disable button while loading
                     >
-                        Verify Location
+                        {isLoadingLocation ? (
+                            <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+                        ) : (
+                            "Verify Location"
+                        )}
                     </button>
 
                     {/* Show location status */}
@@ -211,11 +227,15 @@ const AttendanceForm = () => {
                         </select>
                         <button
                             type="submit"
-                            className={`px-4 py-2 mt-10 rounded-md w-full ${isWithinLocation === true ? "bg-[#1c69a0]  text-white" : "bg-gray-400 text-gray-200 cursor-not-allowed"
+                            className={`px-4 py-2 mt-10 rounded-md w-full flex items-center justify-center ${isWithinLocation === true ? "bg-[#1c69a0]  text-white" : "bg-gray-400 text-gray-200 cursor-not-allowed"
                                 }`}
-                            disabled={isWithinLocation !== true}
+                            disabled={isWithinLocation !== true || isLoadingSubmit} 
                         >
-                            Submit Attendance
+                            {isLoadingSubmit ? (
+                                <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+                            ) : (
+                                "Submit Attendance"
+                            )}
                         </button>
                     </form>
                 </div>
