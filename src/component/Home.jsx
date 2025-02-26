@@ -7,17 +7,29 @@ const AttendanceForm = () => {
         fullName: "",
         churchCenter: "",
     });
+
+    const [status, setStatus] = useState("");
+
     const [isWithinLocation, setIsWithinLocation] = useState(null);
     
     const googleScriptURL = import.meta.env.VITE_GOOGLE_SCRIPT_URL;
         // const googleScriptURL = "https://script.google.com/macros/s/AKfycbwkvayaxqKjWGFe1bMz4QBhTBpEkle7y1-BQ9PWqvKnpHEMIAwVnVFNAy_85Mwx2Oe3FA/exec";
 
-
+    //Peter's House location
     const rehearsalVenue = {
-        latitude: 7.843822, 
-        longitude: 3.927699,
+        latitude: 7.844971, 
+        longitude: 3.942641,
     };
+
+
+    // //Relixcore location
+    // const rehearsalVenue = {
+    //     latitude: 7.843822, 
+    //     longitude: 3.927699,
+    // };
     
+
+    // Church's Location
     // const rehearsalVenue = {
     //     latitude: 7.462489762472925, 
     //     longitude: 3.9130698895319016,
@@ -95,21 +107,19 @@ const AttendanceForm = () => {
         });
 
         try {
-            // const response =
-             await fetch(googleScriptURL, {
+            const response = await fetch(googleScriptURL, {
                 method: "POST",
                 headers: { "Content-Type": "application/x-www-form-urlencoded" },
                 body: formDataUrl.toString(),
             });
 
-            // const result = await response.json();
-
-            // if (result.status === "success") {
+            const result = await response.text();
+            if (result === "success") {
                 setStatus("Submitted successfully!");
                 setFormData({ fullName: "", churchCenter: "" });
-            // } else {
-            //     throw new Error(result.error || "Unknown error");
-            // }
+            } else {
+                throw new Error("Submission failed");
+            }
         } catch (error) {
             console.error("Error submitting:", error);
             alert("Submission failed. Please try again.");
