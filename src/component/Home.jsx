@@ -165,7 +165,7 @@ const AttendanceForm = () => {
                     <h2 className="md:text-2xl text-center text-lg font-bold mb-4">General Rehearsal Attendance</h2>
 
                     <div className="text-center mb-4">
-                        <p className="text-lg font-semibold">Submissions Today: {submissionCount}</p>
+                        <p className="text-lg font-semibold">{submissionCount}: Attendee </p>
                     </div>
 
                     {/* Location Verification Button */}
