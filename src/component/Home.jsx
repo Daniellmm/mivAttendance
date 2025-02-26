@@ -62,7 +62,7 @@ const AttendanceForm = () => {
 
                     console.log("Distance to venue:", distance, "meters");
 
-                    if (distance <= 1000) {
+                    if (distance <= 500) {
                         setIsWithinLocation(true);
                     } else {
                         setIsWithinLocation(false);
@@ -93,15 +93,15 @@ const AttendanceForm = () => {
 
         const currentDate = new Date().toLocaleDateString("en-GB");
 
-        // Add the date and location status to the form data
-        const formDataWithDate = {
+        
+        const formDataWithDate = {   // Add the date and location status to the form data
             ...formData,
             date: currentDate,
             isWithinLocation: isWithinLocation ? "Yes" : "No"
         };
 
-        // Convert form data to URLSearchParams
-        const formDataUrl = new URLSearchParams();
+        
+        const formDataUrl = new URLSearchParams();  // Convert form data to URLSearchParams
         Object.keys(formDataWithDate).forEach((key) => {
             formDataUrl.append(key, formDataWithDate[key]);
         });
@@ -113,9 +113,10 @@ const AttendanceForm = () => {
                 body: formDataUrl.toString(),
             });
 
-            const result = await response.json(); // Parse the response as JSON
-            if (result.status === "success") { // Check the status field in the JSON response
+            const result = await response.json(); 
+            if (result.status === "success") { 
                 setStatus("Submitted successfully!");
+                alert("Submitted successfully!");
                 setFormData({ fullName: "", churchCenter: "" });
             } else {
                 throw new Error("Submission failed");
