@@ -113,14 +113,15 @@ const AttendanceForm = () => {
                 body: formDataUrl.toString(),
             });
 
-            const result = await response.text();
-            if (result === "success") {
+            const result = await response.json(); // Parse the response as JSON
+            if (result.status === "success") { // Check the status field in the JSON response
                 setStatus("Submitted successfully!");
                 setFormData({ fullName: "", churchCenter: "" });
             } else {
                 throw new Error("Submission failed");
             }
         } catch (error) {
+            setStatus('Error Submitting Form.');
             console.error("Error submitting:", error);
             alert("Submission failed. Please try again.");
         }
