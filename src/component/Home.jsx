@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import BackImg from '../assets/bg1.jpg';
 import Logo from '../assets/logo.jpg';
 
@@ -9,15 +9,38 @@ const AttendanceForm = () => {
     });
 
     const [status, setStatus] = useState("");
-
     const [isWithinLocation, setIsWithinLocation] = useState(null);
-    
+    const [submissionCount, setSubmissionCount] = useState(0);
+
     const googleScriptURL = import.meta.env.VITE_GOOGLE_SCRIPT_URL;
-        // const googleScriptURL = "https://script.google.com/macros/s/AKfycbwkvayaxqKjWGFe1bMz4QBhTBpEkle7y1-BQ9PWqvKnpHEMIAwVnVFNAy_85Mwx2Oe3FA/exec";
+    // const googleScriptURL = "https://script.google.com/macros/s/AKfycbwkvayaxqKjWGFe1bMz4QBhTBpEkle7y1-BQ9PWqvKnpHEMIAwVnVFNAy_85Mwx2Oe3FA/exec";
+
+    // Function to fetch the submission count for the day
+
+    const fetchSubmissionCount = async () => {
+        try {
+            const response = await fetch(`${googleScriptURL}?action=getCount`); // Call the doGet function
+            const result = await response.json();
+            setSubmissionCount(result.total); // Update the count
+        } catch (error) {
+            console.error("Error fetching submission count:", error);
+        }
+    };
+
+    // Fetch the count when the component mounts
+    useEffect(() => {
+        fetchSubmissionCount(); // Fetch the count immediately when the component mounts
+
+        // Set interval to update every 10 seconds
+        const interval = setInterval(fetchSubmissionCount, 10000); // 10,000 ms = 10 seconds
+        return () => clearInterval(interval); // Cleanup on unmount
+    }, []);
+
+
 
     //Peter's House location
     const rehearsalVenue = {
-        latitude: 7.844971, 
+        latitude: 7.844971,
         longitude: 3.942641,
     };
 
@@ -27,7 +50,7 @@ const AttendanceForm = () => {
     //     latitude: 7.843822, 
     //     longitude: 3.927699,
     // };
-    
+
 
     // Church's Location
     // const rehearsalVenue = {
@@ -35,7 +58,7 @@ const AttendanceForm = () => {
     //     longitude: 3.9130698895319016,
     // };
 
-    
+
     const getDistance = (lat1, lon1, lat2, lon2) => {
         const toRad = (value) => (value * Math.PI) / 180;
         const R = 6371; // Earth's radius in km
@@ -49,7 +72,7 @@ const AttendanceForm = () => {
         return R * c * 1000; // Convert to meters
     };
 
-    
+
     const checkLocation = () => {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
@@ -57,7 +80,7 @@ const AttendanceForm = () => {
                     const userLat = position.coords.latitude;
                     const userLon = position.coords.longitude;
 
-                    
+
                     const distance = getDistance(userLat, userLon, rehearsalVenue.latitude, rehearsalVenue.longitude);
 
                     console.log("Distance to venue:", distance, "meters");
@@ -93,14 +116,14 @@ const AttendanceForm = () => {
 
         const currentDate = new Date().toLocaleDateString("en-GB");
 
-        
+
         const formDataWithDate = {   // Add the date and location status to the form data
             ...formData,
             date: currentDate,
             isWithinLocation: isWithinLocation ? "Yes" : "No"
         };
 
-        
+
         const formDataUrl = new URLSearchParams();  // Convert form data to URLSearchParams
         Object.keys(formDataWithDate).forEach((key) => {
             formDataUrl.append(key, formDataWithDate[key]);
@@ -113,11 +136,12 @@ const AttendanceForm = () => {
                 body: formDataUrl.toString(),
             });
 
-            const result = await response.json(); 
-            if (result.status === "success") { 
+            const result = await response.json();
+            if (result.status === "success") {
                 setStatus("Submitted successfully!");
                 alert("Submitted successfully!");
                 setFormData({ fullName: "", churchCenter: "" });
+                fetchSubmissionCount();
             } else {
                 throw new Error("Submission failed");
             }
@@ -139,6 +163,10 @@ const AttendanceForm = () => {
                         <img src={Logo} alt="Logo" />
                     </div>
                     <h2 className="md:text-2xl text-center text-lg font-bold mb-4">General Rehearsal Attendance</h2>
+
+                    <div className="text-center mb-4">
+                        <p className="text-lg font-semibold">Submissions Today: {submissionCount}</p>
+                    </div>
 
                     {/* Location Verification Button */}
                     <button
