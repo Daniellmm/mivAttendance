@@ -217,12 +217,12 @@ const AttendanceForm = () => {
                             <option value="Harvester">Harvest House</option>
                             <option value="Grace House">Grace House</option>
                             <option value="Potter House">Potter's House</option>
-                            <option value="Potter House">Convenant House</option>
-                            <option value="Potter House">Word House</option>
-                            <option value="Potter House">Revival House</option>
-                            <option value="Potter House">Royal(Yoruba) House</option>
-                            <option value="Potter House">Ikeja</option>
-                            <option value="Potter House">Lekki</option>
+                            <option value="Convenant House">Convenant House</option>
+                            <option value="Word House">Word House</option>
+                            <option value="Revival House">Revival House</option>
+                            <option value="Royal(Yoruba) House">Royal(Yoruba) House</option>
+                            <option value="Ikeja">Ikeja</option>
+                            <option value="Lekki">Lekki</option>
                         </select>
                         <button
                             type="submit"
