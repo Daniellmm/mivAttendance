@@ -15,10 +15,9 @@ const AttendanceForm = () => {
     const [isLoadingSubmit, setIsLoadingSubmit] = useState(false);
 
     const googleScriptURL = import.meta.env.VITE_GOOGLE_SCRIPT_URL;
-    // const googleScriptURL = "https://script.google.com/macros/s/AKfycbwkvayaxqKjWGFe1bMz4QBhTBpEkle7y1-BQ9PWqvKnpHEMIAwVnVFNAy_85Mwx2Oe3FA/exec";
+    
 
     // Function to fetch the submission count for the day
-
     const fetchSubmissionCount = async () => {
         try {
             const response = await fetch(`${googleScriptURL}?action=getCount`); // Call the doGet function
@@ -42,8 +41,8 @@ const AttendanceForm = () => {
 
     //Peter's House location
     const rehearsalVenue = {
-        latitude: 7.844971,
-        longitude: 3.942641,
+        latitude: 7.453568,
+        longitude: 3.899401,
     };
 
 
