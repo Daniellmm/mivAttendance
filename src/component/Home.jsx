@@ -41,8 +41,8 @@ const AttendanceForm = () => {
 
     //Peter's House location
     const rehearsalVenue = {
-        latitude: 7.453568,
-        longitude: 3.899401,
+        latitude: 7.462560,
+        longitude: 3.913171,
     };
 
 
